@@ -94,6 +94,12 @@ class ViewController: UIViewController, UIWebViewDelegate, UIGestureRecognizerDe
             self.setNeedsStatusBarAppearanceUpdate()
         })
         
+        isShowToolBar = !isShowToolBar
+        UIView.animateWithDuration(0.5, animations: {[unowned self]() -> Void in
+            var toolbarFrame = self.toolbar.frame
+            toolbarFrame.origin.y = self.toolbar.frame.origin.y + (44 * (self.isShowToolBar ? -1 : 1))
+            self.toolbar.frame = toolbarFrame
+        })
     }
     
     // UIWebViewドラッグイベントハンドラ
