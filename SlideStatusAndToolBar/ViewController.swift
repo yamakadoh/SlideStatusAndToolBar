@@ -14,6 +14,7 @@ class ViewController: UIViewController, UIWebViewDelegate, UIGestureRecognizerDe
     var isShowStatusBar = false // ステータスバーの表示状態
     
     var toolbar = UIToolbar()
+    var isShowToolBar = true // ツールバーの表示状態
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,19 +116,41 @@ class ViewController: UIViewController, UIWebViewDelegate, UIGestureRecognizerDe
             // WebViewのボトムへの移動操作か
             let isDragUp: Bool = point.y < 0    // TODO: しきい値を設定してちゃんと判定する
             if isDragUp {
+                // ステータスバーを非表示
                 isShowStatusBar = false
                 UIView.animateWithDuration(0.3, animations: {[unowned self]() -> Void in
                     self.setNeedsStatusBarAppearanceUpdate()
                 })
+                
+                // ツールバーを非表示
+                if isShowToolBar {
+                    isShowToolBar = false
+                    UIView.animateWithDuration(0.5, animations: {[unowned self]() -> Void in
+                        var toolbarFrame = self.toolbar.frame
+                        toolbarFrame.origin.y = self.toolbar.frame.origin.y + 44
+                        self.toolbar.frame = toolbarFrame
+                    })
+                }
             }
 
             // WebViewのトップへの移動操作か
             let isDragDown: Bool = point.y > 0    // TODO: しきい値を設定してちゃんと判定する
             if isDragDown {
+                // ステータスバーを表示
                 isShowStatusBar = true
                 UIView.animateWithDuration(0.3, animations: {[unowned self]() -> Void in
                     self.setNeedsStatusBarAppearanceUpdate()
                 })
+                
+                // ツールバーを表示
+                if !isShowToolBar {
+                    isShowToolBar = true
+                    UIView.animateWithDuration(0.5, animations: {[unowned self]() -> Void in
+                        var toolbarFrame = self.toolbar.frame
+                        toolbarFrame.origin.y = self.toolbar.frame.origin.y - 44
+                        self.toolbar.frame = toolbarFrame
+                    })
+                }
             }
         }
     }
